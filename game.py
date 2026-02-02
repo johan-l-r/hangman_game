@@ -1,4 +1,5 @@
 import curses
+import sys
 
 from menu import Menu
 
@@ -7,10 +8,12 @@ class Game:
     self.stdscr = stdscr
     self.main_menu = Menu(
       stdscr, 
-      ["play", "quit"], 
+      ["PLAY", "QUIT"], 
       curses.COLOR_WHITE, 
       curses.COLOR_BLACK
     )
+    self.main_menu.add_event(self.play)
+    self.main_menu.add_event(self.quit)
 
   def run(self):
     while True:
@@ -20,3 +23,8 @@ class Game:
       self.main_menu.iterate()
 
       self.stdscr.refresh()
+
+  def play(self): pass
+
+  def quit(self):
+    sys.exit()

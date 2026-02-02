@@ -12,6 +12,7 @@ class Menu:
     self.stdscr = stdscr
     self.menu = menu
     self.selected_index = 0
+    self.events = []
 
     curses.init_pair(1, SELECTED_FG_COLOR, SELECTED_BG_COLOR)
 
@@ -20,10 +21,15 @@ class Menu:
 
     if key == ord("j") and self.selected_index < len(self.menu) - 1:
       self.selected_index += 1 
-
     if key == ord("k") and self.selected_index > 0:
       self.selected_index -= 1 
+    if key == curses.KEY_ENTER or key in [10, 13]:
+      if self.selected_index < len(self.events):
+        self.events[self.selected_index]()
     
+  def add_event(self, event):
+    self.events.append(event)
+
   def show(self):
     self.stdscr.clear()
     for i, item in enumerate(self.menu):
