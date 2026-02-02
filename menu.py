@@ -18,10 +18,10 @@ class Menu:
   def iterate(self): 
     key = self.stdscr.getch()
 
-    if key == ord("j"):
+    if key == ord("j") and self.selected_index < len(self.menu) - 1:
       self.selected_index += 1 
 
-    if key == ord("k"):
+    if key == ord("k") and self.selected_index > 0:
       self.selected_index -= 1 
     
   def show(self):
