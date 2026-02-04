@@ -19,10 +19,12 @@ class Menu:
   def iterate(self): 
     key = self.stdscr.getch()
 
-    if key == ord("j") and self.selected_index < len(self.menu) - 1:
+    if (key == ord("j") or key == curses.KEY_DOWN) and self.selected_index < len(self.menu) - 1:
       self.selected_index += 1 
-    if key == ord("k") and self.selected_index > 0:
+
+    if (key == ord("k") or key == curses.KEY_UP) and self.selected_index > 0:
       self.selected_index -= 1 
+
     if key == curses.KEY_ENTER or key in [10, 13]:
       if self.selected_index < len(self.events):
         self.events[self.selected_index]()

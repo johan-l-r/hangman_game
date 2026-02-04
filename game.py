@@ -2,6 +2,7 @@ import curses
 import sys
 
 from menu import Menu
+import word_generator
 
 class Game:
   def __init__(self, stdscr):
@@ -24,7 +25,11 @@ class Game:
 
       self.stdscr.refresh()
 
-  def play(self): pass
+  def play(self): 
+    self.stdscr.clear()
+    self.stdscr.addstr(4, 4, str(word_generator.get_random_word()))
+    self.stdscr.refresh()
+    self.stdscr.getch()
 
   def quit(self):
     sys.exit()
