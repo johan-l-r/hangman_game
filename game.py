@@ -13,6 +13,7 @@ class Game:
       curses.COLOR_WHITE, 
       curses.COLOR_BLACK
     )
+
     self.main_menu.add_event(self.play)
     self.main_menu.add_event(self.quit)
 
@@ -21,15 +22,24 @@ class Game:
       self.stdscr.clear()
 
       self.main_menu.show()
-      self.main_menu.iterate()
 
       self.stdscr.refresh()
 
   def play(self): 
     self.stdscr.clear()
-    self.stdscr.addstr(4, 4, str(word_generator.get_random_word()))
-    self.stdscr.refresh()
+
+    word = word_generator.get_random_word()
+    self.show_board(word, len(word))
     self.stdscr.getch()
+
+    self.stdscr.refresh()
+
+  def show_board(self, word,  length):
+    for char in word:
+      if char == " ":
+        self.stdscr.addstr(" ")
+      else:
+        self.stdscr.addstr("_ ")
 
   def quit(self):
     sys.exit()

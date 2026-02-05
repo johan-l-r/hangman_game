@@ -44,4 +44,6 @@ class Menu:
 
     self.stdscr.refresh()
 
+    self.iterate()
+
   def get_menu_length(self): return len(self.menu)
