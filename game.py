@@ -62,10 +62,13 @@ class Game:
       self.stdscr.refresh()
 
       letter = self.stdscr.getch()
+
       if letter == -1:
         continue
 
       ch = chr(letter)
+
+      self.show_popup(f"you typed the letter {ch}")
 
       if ch not in word:
         ATTEMPTS -= 1
