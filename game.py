@@ -29,20 +29,12 @@ class Game:
     self.stdscr.clear()
 
     word = word_generator.get_random_word()
-    ATTEMPTS = 6
 
     self.show_board(word)
 
-    while ATTEMPTS > 0:
-      self.show_popup()
-      ATTEMPTS -= 1
-
     self.stdscr.refresh()
 
-  def show_popup(self):
-    letter = self.stdscr.getch()
-    message = f"you typed the letter {chr(letter)}"
-
+  def show_popup(self, message):
     POPUP_WIDTH = len(message) + 6
     POPUP_HEIGHT = 5
 
@@ -55,12 +47,34 @@ class Game:
     confirmation_popup.addstr(message_y_pos, message_x_pos, message)
     confirmation_popup.getch()
 
+    # remove popup and wait for input
+    confirmation_popup.clear()
+    confirmation_popup.refresh()
+
   def show_board(self, word):
-    for char in word:
-      if char == " ":
-        self.stdscr.addstr(" ")
-      else:
-        self.stdscr.addstr("_ ")
+    ATTEMPTS = 6
+
+    board = ["_"] * len(word)
+
+    while ATTEMPTS > 0:
+      self.stdscr.clear()
+      self.stdscr.addstr(0, 0, "  ".join(board))
+      self.stdscr.refresh()
+
+      letter = self.stdscr.getch()
+      if letter == -1:
+        continue
+
+      ch = chr(letter)
+
+      if ch not in word:
+        ATTEMPTS -= 1
+        continue
+
+      # reveal letters
+      for i, char in enumerate(word):
+        if char == ch:
+          board[i] = ch
 
   def quit(self):
     sys.exit()
