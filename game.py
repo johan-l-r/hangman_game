@@ -13,6 +13,7 @@ class Game:
       curses.COLOR_WHITE, 
       curses.COLOR_BLACK
     )
+    self.used_letters = []
 
     self.main_menu.add_event(self.play)
     self.main_menu.add_event(self.quit)
@@ -70,11 +71,20 @@ class Game:
 
       self.show_popup(f"you typed the letter {ch}")
 
+      if ch in self.used_letters: 
+        self.show_popup("you already used this letter")
+
+        continue
+
       if ch not in word:
         ATTEMPTS -= 1
+        self.used_letters.append(ch)
+
         continue
 
       # reveal letters
+      self.used_letters.append(ch)
+
       for i, char in enumerate(word):
         if char == ch:
           board[i] = ch
