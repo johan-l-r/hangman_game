@@ -1,28 +1,46 @@
-import curses 
+import curses
 
 class Popup: 
   def __init__(self, padding):
     self.padding = padding
+    self.popup = None
 
   def show(self, message):  
-    POPUP_WIDTH = len(message) + (self.padding * 2)
+    message_lines = message.split("\n")
 
-    message_lines = message.splitlines()
+    max_line_len = max(len(line) for line in message_lines)
+    POPUP_WIDTH = max_line_len + (self.padding * 2)
+    POPUP_HEIGHT = len(message_lines) + self.padding + 3  
 
-    POPUP_HEIGHT = len(message_lines) + self.padding
+    self.popup = curses.newwin(POPUP_HEIGHT, POPUP_WIDTH, 5, 5)
+    self.popup.keypad(True)
 
-    popup = curses.newwin(POPUP_HEIGHT, POPUP_WIDTH, 5, 5)
-
-    # center message vertically
-    message_y_pos = len(message_lines) // 2
+    message_y_pos = (POPUP_HEIGHT - len(message_lines) - 2) // 2
 
     for i, line in enumerate(message_lines):
       line_x_pos = (POPUP_WIDTH - len(line)) // 2
-      popup.addstr(2, line_x_pos, line)
+      self.popup.addstr(message_y_pos + i, line_x_pos, line)
 
-    popup.box()
-    popup.getch()
+    button_text = "< OK >"
+    button_y = POPUP_HEIGHT - 2
+    button_x = (POPUP_WIDTH - len(button_text)) // 2
+    self.popup.addstr(button_y, button_x, button_text, curses.A_REVERSE)
 
-  def confirm(self, event): pass
+    self.popup.box()
+    self.popup.refresh()
 
-    
+  def confirm(self):
+    while True:
+      key = self.popup.getch()
+
+      if key in (curses.KEY_ENTER, 10, 13):
+        self.popup.refresh()
+        self.popup.clear()
+
+        return True
+      elif key == 27:
+        self.popup.refresh()
+        self.popup.clear()
+
+        return False
+

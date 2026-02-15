@@ -38,23 +38,6 @@ class Game:
 
     self.stdscr.refresh()
 
-  def show_popup(self, message):
-    POPUP_WIDTH = len(message) + 6
-    POPUP_HEIGHT = 5
-
-    message_x_pos = (POPUP_WIDTH - len(message)) // 2 
-    message_y_pos = POPUP_HEIGHT // 2
-
-    confirmation_popup = curses.newwin(POPUP_HEIGHT, POPUP_WIDTH, 4, 4)
-
-    confirmation_popup.box()
-    confirmation_popup.addstr(message_y_pos, message_x_pos, message)
-    confirmation_popup.getch()
-
-    # remove popup and wait for input
-    confirmation_popup.clear()
-    confirmation_popup.refresh()
-
   def show_board(self, word):
     ATTEMPTS = 6
 
@@ -72,11 +55,13 @@ class Game:
 
       ch = chr(letter)
 
-      self.popup.show(f"you typed the letter {ch}")
-      # self.show_popup(f"you typed the letter {ch}")
+      self.popup.show(f"\nyou typed the letter {ch}")
+
+      if not self.popup.confirm(): continue
 
       if ch in self.used_letters: 
-        self.show_popup("you already used this letter")
+        self.popup.show("you already used this letter")
+        if not self.popup.confirm(): continue
 
         continue
 
