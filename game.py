@@ -3,6 +3,7 @@ import sys
 
 from menu import Menu
 import word_generator
+from popup import Popup
 
 class Game:
   def __init__(self, stdscr):
@@ -13,6 +14,8 @@ class Game:
       curses.COLOR_WHITE, 
       curses.COLOR_BLACK
     )
+
+    self.popup = Popup(4)
     self.used_letters = []
 
     self.main_menu.add_event(self.play)
@@ -69,7 +72,8 @@ class Game:
 
       ch = chr(letter)
 
-      self.show_popup(f"you typed the letter {ch}")
+      self.popup.show(f"you typed the letter {ch}")
+      # self.show_popup(f"you typed the letter {ch}")
 
       if ch in self.used_letters: 
         self.show_popup("you already used this letter")
