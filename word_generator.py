@@ -19,7 +19,7 @@ def get_random_word():
       params = {
         "category": category,
         "language": "en",  
-        "length": 10, 
+        "length": randint(3, 10), 
         "words": 1
         }
       )
